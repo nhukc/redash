@@ -53,6 +53,7 @@ class DuckDB(BaseSQLQueryRunner):
     def __init__(self, configuration):
         super().__init__(configuration)
         self.dbpath = configuration.get("dbpath", ":memory:")
+        self.read_only = configuration.get("read_only", False)
         exts = configuration.get("extensions", "")
         self.extensions = [e.strip() for e in exts.split(",") if e.strip()]
         self._connect()
@@ -67,9 +68,14 @@ class DuckDB(BaseSQLQueryRunner):
                     "title": "Database Path",
                     "default": ":memory:",
                 },
+                "read_only": {
+                    "type": "boolean",
+                    "title": "Read Only",
+                    "default": True,
+                },
                 "extensions": {"type": "string", "title": "Extensions (comma separated)"},
             },
-            "order": ["dbpath", "extensions"],
+            "order": ["dbpath", "read_only", "extensions"],
             "required": ["dbpath"],
         }
 
@@ -78,7 +84,7 @@ class DuckDB(BaseSQLQueryRunner):
         return enabled
 
     def _connect(self) -> None:
-        self.con = duckdb.connect(self.dbpath)
+        self.con = duckdb.connect(self.dbpath, read_only=self.read_only)
         for ext in self.extensions:
             try:
                 if "." in ext:
