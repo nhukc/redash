@@ -83,6 +83,38 @@ function prepareBoxSeries(series: any, options: any, { seriesColor }: any) {
   return series;
 }
 
+function prepareBoxplotSeries(series: any, options: any, { seriesColor, data }: any) {
+  // Extract arrays for each statistic from the data points
+  const xValues: any[] = [];
+  const lowerfenceValues: any[] = [];
+  const q1Values: any[] = [];
+  const medianValues: any[] = [];
+  const q3Values: any[] = [];
+  const upperfenceValues: any[] = [];
+
+  each(data, row => {
+    xValues.push(row.x);
+    lowerfenceValues.push(cleanNumber(row.lowerfence));
+    q1Values.push(cleanNumber(row.q1));
+    medianValues.push(cleanNumber(row.median));
+    q3Values.push(cleanNumber(row.q3));
+    upperfenceValues.push(cleanNumber(row.upperfence));
+  });
+
+  return {
+    type: "box",
+    x: xValues,
+    lowerfence: lowerfenceValues,
+    q1: q1Values,
+    median: medianValues,
+    q3: q3Values,
+    upperfence: upperfenceValues,
+    name: series.name,
+    marker: { color: seriesColor },
+    hoverinfo: "x+y+name",
+  };
+}
+
 function prepareSeries(series: any, options: any, numSeries: any, additionalOptions: any) {
   const { hoverInfoPattern, index } = additionalOptions;
 
@@ -165,6 +197,8 @@ function prepareSeries(series: any, options: any, numSeries: any, additionalOpti
       return prepareBubbleSeries(plotlySeries, options, additionalOptions);
     case "box":
       return prepareBoxSeries(plotlySeries, options, additionalOptions);
+    case "boxplot":
+      return prepareBoxplotSeries(plotlySeries, options, additionalOptions);
     default:
       return plotlySeries;
   }

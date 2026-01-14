@@ -12,6 +12,7 @@ const allChartTypes = [
   { type: "bubble", name: "Bubble", icon: "circle-o" },
   { type: "heatmap", name: "Heatmap", icon: "th" },
   { type: "box", name: "Box", icon: "square-o" },
+  { type: "boxplot", name: "Box Plot", icon: "square-o" },
 ];
 
 type OwnProps = {

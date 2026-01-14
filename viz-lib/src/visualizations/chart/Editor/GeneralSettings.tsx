@@ -9,6 +9,11 @@ import ColumnMappingSelect from "./ColumnMappingSelect";
 import { useDebouncedCallback } from "use-debounce/lib";
 
 function getAvailableColumnMappingTypes(options: any) {
+  // Box Plot (Precomputed) has its own column mappings
+  if (options.globalSeriesType === "boxplot") {
+    return ["x", "lowerfence", "q1", "median", "q3", "upperfence", "series"];
+  }
+
   const result = ["x", "y"];
 
   if (!includes(["custom", "heatmap"], options.globalSeriesType)) {

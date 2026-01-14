@@ -72,9 +72,37 @@ export default function getChartData(data: any, options: any) {
       if (type === "multiFilter" || type === "multi-filter") {
         seriesName = String(value);
       }
+
+      // Box Plot (Precomputed) column types
+      if (type === "lowerfence") {
+        // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        point[type] = value;
+      }
+      if (type === "q1") {
+        // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        point[type] = value;
+      }
+      if (type === "median") {
+        // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        point[type] = value;
+      }
+      if (type === "q3") {
+        // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        point[type] = value;
+      }
+      if (type === "upperfence") {
+        // @ts-expect-error ts-migrate(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        point[type] = value;
+      }
     });
 
-    if (isNil(seriesName)) {
+    // Box Plot (Precomputed) - add point with x and boxplot stats
+    if (options.globalSeriesType === "boxplot") {
+      const boxplotSeriesName = seriesName || "boxplot";
+      // @ts-expect-error ts-migrate(2322) FIXME: Type assignment
+      point = { x: xValue, ...point };
+      addPointToSeries(point, series, boxplotSeriesName);
+    } else if (isNil(seriesName)) {
       each(yValues, (yValue, ySeriesName) => {
         // @ts-expect-error ts-migrate(2322) FIXME: Type '{ x: number; y: never; $raw: any; }' is not ... Remove this comment to see the full error message
         point = { x: xValue, y: yValue, $raw: point.$raw };

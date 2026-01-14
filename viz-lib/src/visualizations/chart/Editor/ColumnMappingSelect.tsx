@@ -9,6 +9,12 @@ const MappingTypes = {
   yError: { label: "Errors column" },
   size: { label: "Bubble Size Column" },
   zVal: { label: "Color Column" },
+  // Box Plot (Precomputed) mappings
+  lowerfence: { label: "Min" },
+  q1: { label: "Q1" },
+  median: { label: "Median" },
+  q3: { label: "Q3" },
+  upperfence: { label: "Max" },
 };
 
 const SwappedMappingTypes = {
